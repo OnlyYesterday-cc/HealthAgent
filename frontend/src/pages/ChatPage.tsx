@@ -209,7 +209,7 @@ export default function ChatPage() {
             flexDirection: 'column',
             boxShadow: '0 2px 12px rgba(47,125,255,0.06)',
             borderRadius: 14,
-            border: '1px solid #eef1f6',
+            border: '1px solid #d0d0d0',
           }}
           bodyStyle={{ padding: 10, overflow: 'auto', flex: 1 }}
           title={<span style={{ fontWeight: 600, fontSize: 15 }}>💬 会话</span>}
@@ -285,7 +285,7 @@ export default function ChatPage() {
             flexDirection: 'column',
             boxShadow: '0 2px 16px rgba(47,125,255,0.06)',
             borderRadius: 14,
-            border: '1px solid #eef1f6',
+            border: '1px solid #d0d0d0',
           }}
           bodyStyle={{
             padding: 0,

@@ -154,7 +154,7 @@ export default function BpRecordList() {
           </>
         }
       />
-      <Card style={{ borderRadius: 14 }}>
+      <Card style={{ borderRadius: 14, border: '1px solid #d0d0d0' }}>
         <Table<BpRecord>
           rowKey="id"
           columns={columns}

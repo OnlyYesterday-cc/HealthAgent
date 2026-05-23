@@ -5,7 +5,7 @@
     "diastolic": 76,
     "heart_rate": 72,
     "source": "synthetic_clean",
-    "note": "手机App深色模式截图 | style=smartphone_dark | effects=['noise', 'brightness']"
+    "note": "手机App深色模式截图 | style=smartphone_dark | effects=['noise']"
   },
   {
     "file": "clean_002.png",
@@ -13,7 +13,7 @@
     "diastolic": 85,
     "heart_rate": 68,
     "source": "synthetic_clean",
-    "note": "手机App浅色模式截图 | style=smartphone_light | effects=['brightness']"
+    "note": "手机App浅色模式截图 | style=smartphone_light | effects=['noise', 'blur']"
   },
   {
     "file": "clean_003.png",
@@ -21,7 +21,7 @@
     "diastolic": 92,
     "heart_rate": 80,
     "source": "synthetic_clean",
-    "note": "电脑端看板截图 | style=computer_dashboard | effects=['noise', 'blur', 'brightness']"
+    "note": "电脑端看板截图 | style=computer_dashboard | effects=['blur']"
   },
   {
     "file": "clean_004.png",
@@ -29,7 +29,7 @@
     "diastolic": 65,
     "heart_rate": 58,
     "source": "synthetic_clean",
-    "note": "打印的体检标签 | style=printed_label | effects=['noise']"
+    "note": "打印的体检标签 | style=printed_label | effects=['noise', 'brightness']"
   },
   {
     "file": "clean_005.png",
@@ -37,7 +37,7 @@
     "diastolic": 98,
     "heart_rate": 88,
     "source": "synthetic_clean",
-    "note": "平板App测量结果页 | style=tablet_app | effects=['noise', 'brightness']"
+    "note": "平板App测量结果页 | style=tablet_app | effects=['noise']"
   },
   {
     "file": "clean_006.png",
@@ -45,7 +45,7 @@
     "diastolic": 80,
     "heart_rate": 75,
     "source": "synthetic_clean",
-    "note": "医用点阵屏设备 | style=medical_device_dotmatrix | effects=[]"
+    "note": "医用点阵屏设备 | style=medical_device_dotmatrix | effects=['noise', 'blur']"
   },
   {
     "file": "clean_007.png",
@@ -53,7 +53,7 @@
     "diastolic": 87,
     "heart_rate": 93,
     "source": "synthetic_clean",
-    "note": "手机App深色-运动后测量 | style=smartphone_dark | effects=['blur']"
+    "note": "手机App深色-运动后测量 | style=smartphone_dark | effects=['noise', 'brightness']"
   },
   {
     "file": "clean_008.png",
@@ -61,7 +61,7 @@
     "diastolic": 60,
     "heart_rate": 62,
     "source": "synthetic_clean",
-    "note": "电脑端历史记录页 | style=computer_dashboard | effects=['noise', 'blur', 'brightness']"
+    "note": "电脑端历史记录页 | style=computer_dashboard | effects=[]"
   },
   {
     "file": "clean_009.png",
@@ -77,6 +77,6 @@
     "diastolic": 78,
     "heart_rate": 70,
     "source": "synthetic_clean",
-    "note": "平板App周报摘要 | style=tablet_app | effects=['noise', 'blur', 'brightness']"
+    "note": "平板App周报摘要 | style=tablet_app | effects=[]"
   }
 ]

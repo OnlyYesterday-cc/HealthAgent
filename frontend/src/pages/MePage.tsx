@@ -110,7 +110,7 @@ export default function MePage() {
 
         <Card
           title={<span style={{ fontWeight: 600 }}>📋 账号信息</span>}
-          style={{ marginBottom: 16, borderRadius: 14, border: '1px solid #eef1f6' }}
+          style={{ marginBottom: 16, borderRadius: 14, border: '1px solid #d0d0d0' }}
         >
           <Descriptions column={1} size="small">
             <Descriptions.Item label="头像">
@@ -139,7 +139,7 @@ export default function MePage() {
 
         <Card
           title={<span style={{ fontWeight: 600 }}>👤 基础资料</span>}
-          style={{ borderRadius: 14, border: '1px solid #eef1f6' }}
+          style={{ borderRadius: 14, border: '1px solid #d0d0d0' }}
         >
           <Form<ProfileForm>
             form={form}

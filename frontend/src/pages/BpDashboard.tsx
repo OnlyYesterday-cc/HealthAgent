@@ -162,21 +162,21 @@ export default function BpDashboard() {
     series: [
       {
         name: '收缩压', type: 'line', data: series.map((r) => r.systolic),
-        smooth: true, symbol: 'circle', symbolSize: 4,
+        smooth: false, symbol: 'circle', symbolSize: 6,
         lineStyle: { width: 2.5, color: '#2f7dff' },
         itemStyle: { color: '#2f7dff' },
         areaStyle: { color: { type: 'linear', x: 0, y: 0, x2: 0, y2: 1, colorStops: [{ offset: 0, color: 'rgba(47,125,255,0.12)' }, { offset: 1, color: 'rgba(47,125,255,0.0)' }] } },
       },
       {
         name: '舒张压', type: 'line', data: series.map((r) => r.diastolic),
-        smooth: true, symbol: 'circle', symbolSize: 4,
+        smooth: false, symbol: 'circle', symbolSize: 6,
         lineStyle: { width: 2.5, color: '#52c41a' },
         itemStyle: { color: '#52c41a' },
         areaStyle: { color: { type: 'linear', x: 0, y: 0, x2: 0, y2: 1, colorStops: [{ offset: 0, color: 'rgba(82,196,26,0.10)' }, { offset: 1, color: 'rgba(82,196,26,0.0)' }] } },
       },
       {
         name: '心率', type: 'line', yAxisIndex: 1, data: series.map((r) => r.heart_rate),
-        smooth: true, symbol: 'diamond', symbolSize: 4,
+        smooth: false, symbol: 'diamond', symbolSize: 6,
         lineStyle: { width: 2, color: '#fa8c16' },
         itemStyle: { color: '#fa8c16' },
       },
@@ -204,12 +204,12 @@ export default function BpDashboard() {
     series: [
       {
         name: '收缩压 MA', type: 'line', data: forecast.points.map((p) => p.systolic),
-        smooth: true, lineStyle: { width: 2, color: '#2f7dff', type: 'dashed' },
+        smooth: false, lineStyle: { width: 2, color: '#2f7dff', type: 'dashed' },
         itemStyle: { color: '#2f7dff' },
       },
       {
         name: '舒张压 MA', type: 'line', data: forecast.points.map((p) => p.diastolic),
-        smooth: true, lineStyle: { width: 2, color: '#52c41a', type: 'dashed' },
+        smooth: false, lineStyle: { width: 2, color: '#52c41a', type: 'dashed' },
         itemStyle: { color: '#52c41a' },
       },
     ],
@@ -222,7 +222,7 @@ export default function BpDashboard() {
       <Card
         className="hero-card page-enter"
         bodyStyle={{ padding: '24px 28px' }}
-        style={{ marginBottom: 20 }}
+        style={{ marginBottom: 20, borderRadius: 14, border: '1px solid #d0d0d0' }}
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 12 }}>
           <div>
@@ -277,7 +277,7 @@ export default function BpDashboard() {
           <Col span={24}>
             <Card
               bodyStyle={{ padding: '16px 24px' }}
-              style={{ borderRadius: 14 }}
+              style={{ borderRadius: 14, border: '1px solid #d0d0d0' }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                 {forecast && (
@@ -300,7 +300,7 @@ export default function BpDashboard() {
           <Col span={24}>
             <Card
               title={<span style={{ fontWeight: 600, fontSize: 15 }}>血压/心率时序</span>}
-              style={{ borderRadius: 14 }}
+              style={{ borderRadius: 14, border: '1px solid #d0d0d0' }}
               bodyStyle={{ padding: '16px 12px 8px' }}
             >
               {series.length === 0 ? (
@@ -325,7 +325,7 @@ export default function BpDashboard() {
                     </Tooltip>
                   </span>
                 }
-                style={{ borderRadius: 14 }}
+                style={{ borderRadius: 14, border: '1px solid #d0d0d0' }}
                 bodyStyle={{ padding: '16px 12px 8px' }}
               >
                 <ReactECharts option={forecastOption} style={{ height: 300 }} />

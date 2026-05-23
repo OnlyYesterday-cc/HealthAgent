@@ -42,6 +42,7 @@ export default function BpRecordForm() {
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [imageId, setImageId] = useState<string | null>(null);
   const [source, setSource] = useState<'manual' | 'ocr'>('manual');
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const runOcr = async (file: File) => {
     setOcrLoading(true);
@@ -99,7 +100,7 @@ export default function BpRecordForm() {
           <Card
             title={<span style={{ fontWeight: 600 }}>📷 拍照识别（可选）</span>}
             size="small"
-            style={{ borderRadius: 14, border: '1px solid #eef1f6' }}
+            style={{ borderRadius: 14, border: '1px solid #d0d0d0' }}
           >
             <Upload.Dragger
               accept="image/jpeg,image/png,image/webp"
@@ -109,6 +110,8 @@ export default function BpRecordForm() {
                 setFileList([
                   { uid: file.uid, name: file.name, status: 'done', originFileObj: file as any },
                 ]);
+                if (previewUrl) URL.revokeObjectURL(previewUrl);
+                setPreviewUrl(URL.createObjectURL(file));
                 void runOcr(file);
                 return false;
               }}
@@ -117,6 +120,10 @@ export default function BpRecordForm() {
                 setOcrResult(null);
                 setImageId(null);
                 setSource('manual');
+                if (previewUrl) {
+                  URL.revokeObjectURL(previewUrl);
+                  setPreviewUrl(null);
+                }
               }}
             >
               <p className="ant-upload-drag-icon">
@@ -126,6 +133,21 @@ export default function BpRecordForm() {
               <p className="ant-upload-hint">JPG/PNG/WebP，≤8MB</p>
             </Upload.Dragger>
 
+            {previewUrl && (
+              <div style={{ marginTop: 12, textAlign: 'center' }}>
+                <img
+                  src={previewUrl}
+                  alt="上传的血压计照片"
+                  style={{
+                    maxWidth: '100%',
+                    maxHeight: 240,
+                    borderRadius: 8,
+                    border: '1px solid #d0d0d0',
+                    objectFit: 'contain',
+                  }}
+                />
+              </div>
+            )}
             {ocrLoading && (
               <Alert style={{ marginTop: 12 }} type="info" message="识别中，请稍候…" />
             )}
@@ -155,7 +177,7 @@ export default function BpRecordForm() {
           <Card
             title={<span style={{ fontWeight: 600 }}>✏️ 确认并保存</span>}
             size="small"
-            style={{ borderRadius: 14, border: '1px solid #eef1f6' }}
+            style={{ borderRadius: 14, border: '1px solid #d0d0d0' }}
           >
             <Form<FormValues>
               form={form}

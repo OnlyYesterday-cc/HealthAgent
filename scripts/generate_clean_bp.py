@@ -168,7 +168,7 @@ def generate_image(index, systolic, diastolic, heart_rate, style_name, desc):
                        fill=style["card_bg"], outline=style["secondary"], width=1)
 
     # SYS
-    sys_x = card_x + 60
+    sys_x = card_x + 30
     sys_y = card_y + 40
     draw.text((sys_x, sys_y), "收缩压 SYS", fill=style["secondary"], font=small_font)
     draw.text((sys_x, sys_y + 30), str(systolic), fill=style["fg"], font=big_font)
@@ -185,16 +185,11 @@ def generate_image(index, systolic, diastolic, heart_rate, style_name, desc):
     draw.text((sys_x + len(str(diastolic)) * 38 + 10, dia_y + 52), "mmHg", fill=style["secondary"], font=mid_font)
 
     # HR on the right side
-    hr_x = card_x + card_w - 200
-    hr_y = card_y + 60
+    hr_x = card_x + card_w - 300
+    hr_y = card_y + 40
     draw.text((hr_x, hr_y), "心率", fill=style["secondary"], font=small_font)
     draw.text((hr_x, hr_y + 30), str(heart_rate), fill=style["danger"], font=big_font)
     draw.text((hr_x + len(str(heart_rate)) * 38 + 10, hr_y + 52), "bpm", fill=style["secondary"], font=mid_font)
-
-    # Heart icon
-    heart_x = hr_x - 45
-    draw.text((heart_x, hr_y + 28), "♥", fill=style["danger"], font=ImageFont.truetype("C:/Windows/Fonts/segoeui.ttf", 48)
-              if Path("C:/Windows/Fonts/segoeui.ttf").exists() else mid_font)
 
     # Bottom info
     info_y = card_y + card_h + 20
