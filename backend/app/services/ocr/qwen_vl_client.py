@@ -82,7 +82,7 @@ def _call_vlm(image_bytes: bytes, prompt: str) -> str:
     b64 = base64.b64encode(image_bytes).decode("ascii")
     url = f"data:image/jpeg;base64,{b64}"
     payload = {
-        "model": s.dashscope_vl_model,
+        "model": s.dashscope_chat_model if s.ocr_vlm_use_chat_config else s.dashscope_vl_model,
         "messages": [
             {
                 "role": "user",
@@ -94,10 +94,14 @@ def _call_vlm(image_bytes: bytes, prompt: str) -> str:
         ],
         "temperature": 0.0,
     }
+    if s.ocr_vlm_use_chat_config:
+        payload["enable_thinking"] = s.ocr_vlm_enable_thinking
+        if s.ocr_vlm_enable_thinking and s.dashscope_reasoning_effort:
+            payload["reasoning_effort"] = s.dashscope_reasoning_effort
     resp = requests.post(
-        _ENDPOINT,
+        s.dashscope_chat_endpoint if s.ocr_vlm_use_chat_config else _ENDPOINT,
         headers={
-            "Authorization": f"Bearer {s.dashscope_api_key}",
+            "Authorization": f"Bearer {s.vlm_api_key}",
             "Content-Type": "application/json",
         },
         json=payload,
@@ -118,7 +122,7 @@ def _call_vlm(image_bytes: bytes, prompt: str) -> str:
 def classify_lcd(image_bytes: bytes) -> bool:
     """Classify whether image is a seven-segment LCD BP monitor screen."""
     s = get_settings()
-    if not s.dashscope_api_key:
+    if not s.vlm_api_key:
         return False  # can't classify, fall through to OCR
     try:
         content = _call_vlm(image_bytes, _CLASSIFY_PROMPT)
@@ -132,8 +136,8 @@ def classify_lcd(image_bytes: bytes) -> bool:
 
 def recognize_bp(image_bytes: bytes) -> dict:
     s = get_settings()
-    if not s.dashscope_api_key:
-        raise QwenVLError("DASHSCOPE_API_KEY not configured")
+    if not s.vlm_api_key:
+        raise QwenVLError("VLM API key not configured")
     try:
         content = _call_vlm(image_bytes, _PROMPT)
     except Exception as e:

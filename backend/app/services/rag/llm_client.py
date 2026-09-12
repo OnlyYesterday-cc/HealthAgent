@@ -34,14 +34,17 @@ def _embed_cache_key(model: str, text: str) -> str:
 
 
 def _chat_cache_key(model: str, messages: list[dict], temperature: float) -> str:
+    s = get_settings()
     payload = json.dumps(
-        {"m": model, "msgs": messages, "t": temperature}, ensure_ascii=False, sort_keys=True
+        {"m": model, "msgs": messages, "t": temperature,
+         "endpoint": s.dashscope_chat_endpoint,
+         "effort": s.dashscope_reasoning_effort}, ensure_ascii=False, sort_keys=True
     )
     h = hashlib.sha256(payload.encode("utf-8")).hexdigest()
     return f"chat:{h}"
 
 
-def embed(texts: list[str], *, use_cache: bool = True) -> list[list[float]]:
+def embed(texts: list[str], *, use_cache: bool = True, is_query: bool = False) -> list[list[float]]:
     """Batch-embed using DashScope OpenAI-compatible endpoint.
 
     Returns one vector per input text. Raises LLMError on any failure.
@@ -49,6 +52,9 @@ def embed(texts: list[str], *, use_cache: bool = True) -> list[list[float]]:
     if not texts:
         return []
     s = get_settings()
+    if s.embedding_provider == "local":
+        from app.services.rag.local_embedding import encode
+        return encode(texts, is_query=is_query)
     if not s.dashscope_api_key:
         raise LLMError("dashscope_api_key is not configured")
 
@@ -111,8 +117,9 @@ def chat(
 ) -> str:
     """Non-streaming chat. Primarily for tests / eval; production uses chat_stream."""
     s = get_settings()
-    if not s.dashscope_api_key:
-        raise LLMError("dashscope_api_key is not configured")
+    api_key = s.dashscope_chat_api_key or s.dashscope_api_key
+    if not api_key:
+        raise LLMError("dashscope_chat_api_key is not configured")
     msgs = [{"role": m.role, "content": m.content} for m in messages]
     temp = s.llm_temperature if temperature is None else temperature
 
@@ -126,7 +133,7 @@ def chat(
     resp = requests.post(
         s.dashscope_chat_endpoint,
         headers={
-            "Authorization": f"Bearer {s.dashscope_api_key}",
+            "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json",
         },
         json={
@@ -134,6 +141,8 @@ def chat(
             "messages": msgs,
             "temperature": temp,
             "stream": False,
+            **({"reasoning_effort": s.dashscope_reasoning_effort}
+               if s.dashscope_reasoning_effort else {}),
         },
         timeout=s.dashscope_timeout,
     )
@@ -156,15 +165,16 @@ def chat_stream(
 ) -> Iterator[str]:
     """Yield content deltas as they arrive (SSE). Caller is responsible for assembly."""
     s = get_settings()
-    if not s.dashscope_api_key:
-        raise LLMError("dashscope_api_key is not configured")
+    api_key = s.dashscope_chat_api_key or s.dashscope_api_key
+    if not api_key:
+        raise LLMError("dashscope_chat_api_key is not configured")
     msgs = [{"role": m.role, "content": m.content} for m in messages]
     temp = s.llm_temperature if temperature is None else temperature
 
     with requests.post(
         s.dashscope_chat_endpoint,
         headers={
-            "Authorization": f"Bearer {s.dashscope_api_key}",
+            "Authorization": f"Bearer {api_key}",
             "Content-Type": "application/json",
         },
         json={
@@ -172,6 +182,8 @@ def chat_stream(
             "messages": msgs,
             "temperature": temp,
             "stream": True,
+            **({"reasoning_effort": s.dashscope_reasoning_effort}
+               if s.dashscope_reasoning_effort else {}),
         },
         timeout=s.dashscope_timeout,
         stream=True,

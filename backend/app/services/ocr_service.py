@@ -99,7 +99,7 @@ def _is_complete(fields: OCRFields) -> bool:
 
 def _apply_vlm_fallback(result: OCRResult, image_bytes: bytes) -> OCRResult:
     s = get_settings()
-    if not s.ocr_vlm_fallback or not s.dashscope_api_key:
+    if not s.ocr_vlm_fallback or not s.vlm_api_key:
         return result
     if _is_complete(result.fields):
         return result
@@ -139,16 +139,19 @@ def _apply_vlm_fallback(result: OCRResult, image_bytes: bytes) -> OCRResult:
 
 
 def recognize(image_bytes: bytes) -> OCRResult:
-    # Step 0: classify image type — if it's a seven-segment LCD, skip OCR and go straight to VLM
-    try:
-        from app.services.ocr.lcd_classifier import classify_lcd
-        from app.services.ocr.qwen_vl_client import recognize_bp as vlm_recognize
-        is_lcd = classify_lcd(image_bytes)
-    except Exception:
-        is_lcd = False
+    engine_name = get_settings().ocr_engine
+    is_lcd = False
+    # Qwen is a direct OCR engine; it does not need classification or fallback.
+    if engine_name != "qwen":
+        try:
+            from app.services.ocr.lcd_classifier import classify_lcd
+            is_lcd = classify_lcd(image_bytes)
+        except Exception:
+            is_lcd = False
 
-    if is_lcd:
-        logger.info("detected LCD display, routing directly to VLM")
+    if engine_name == "qwen" or is_lcd:
+        from app.services.ocr.qwen_vl_client import recognize_bp as vlm_recognize
+        logger.info("routing image directly to vision model")
         vlm = vlm_recognize(image_bytes)
         fields = OCRFields(
             systolic=vlm.get("systolic"),
@@ -165,10 +168,10 @@ def recognize(image_bytes: bytes) -> OCRResult:
             FieldCandidate(label="heart_rate", value=fields.heart_rate, confidence=0.99)
             for _ in [0] if fields.heart_rate is not None
         ]
-        return OCRResult(raw_text="[lcd-direct-vlm]", tokens=[], candidates=cands, fields=fields)
+        source = "[qwen-direct-ocr]" if engine_name == "qwen" else "[lcd-direct-vlm]"
+        return OCRResult(raw_text=source, tokens=[], candidates=cands, fields=fields)
 
     # Not LCD: use OCR primary path with VLM fallback
-    engine_name = get_settings().ocr_engine
     if engine_name == "paddle":
         raw_text, tokens = _recognize_paddle(image_bytes)
     elif engine_name == "baidu":

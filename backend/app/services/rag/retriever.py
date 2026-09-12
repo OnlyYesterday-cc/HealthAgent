@@ -25,7 +25,7 @@ class RetrievedCitation:
 def retrieve(query: str, *, top_k: int = 5, db_path: Optional[str] = None) -> list[RetrievedCitation]:
     if not query.strip():
         return []
-    vec = llm_client.embed([query])[0]
+    vec = llm_client.embed([query], is_query=True)[0]
     conn = _connect(db_path)
     try:
         from app.services.rag.vector_store import search
