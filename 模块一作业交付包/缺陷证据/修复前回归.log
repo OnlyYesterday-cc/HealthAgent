@@ -1,0 +1,90 @@
+/Users/leo/Desktop/软件测试课设/源项目/HealthAgent/backend/.venv/lib/python3.12/site-packages/pytest_asyncio/plugin.py:208: PytestDeprecationWarning: The configuration option "asyncio_default_fixture_loop_scope" is unset.
+The event loop scope for asynchronous fixtures will default to the fixture caching scope. Future versions of pytest-asyncio will default the loop scope for asynchronous fixtures to function scope. Set the default fixture loop scope explicitly in order to avoid unexpected behavior in the future. Valid fixture loop scopes are: "function", "class", "module", "package", "session"
+
+  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))
+============================= test session starts ==============================
+platform darwin -- Python 3.12.14, pytest-8.3.3, pluggy-1.6.0 -- /Users/leo/Desktop/软件测试课设/源项目/HealthAgent/backend/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /Users/leo/Desktop/软件测试课设
+plugins: asyncio-0.24.0, cov-5.0.0, anyio-4.15.1
+asyncio: mode=Mode.STRICT, default_loop_scope=None
+collecting ... collected 3 items
+
+模块一作业交付包/缺陷证据/test_defect_regressions.py::test_m1_d01_full_password_and_legacy_compatibility FAILED [ 33%]
+模块一作业交付包/缺陷证据/test_defect_regressions.py::test_m1_d02_required_null_rejected_nullable_fields_clearable FAILED [ 66%]
+模块一作业交付包/缺陷证据/test_defect_regressions.py::test_m1_d03_timezone_equivalence_create_update_and_query FAILED [100%]
+
+=================================== FAILURES ===================================
+______________ test_m1_d01_full_password_and_legacy_compatibility ______________
+
+client = <starlette.testclient.TestClient object at 0x11379b3b0>
+
+    def test_m1_d01_full_password_and_legacy_compatibility(client):
+        for index, prefix in enumerate(['A' * 72, '\u6c49' * 24]):
+            username = f'long_password_{index}'
+            headers = register(client, username, prefix + 'X')
+>           assert login(client, username, prefix + 'Y').status_code == 401
+E           AssertionError: assert 200 == 401
+E            +  where 200 = <Response [200 OK]>.status_code
+E            +    where <Response [200 OK]> = login(<starlette.testclient.TestClient object at 0x11379b3b0>, 'long_password_0', ('AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA' + 'Y'))
+
+模块一作业交付包/缺陷证据/test_defect_regressions.py:70: AssertionError
+_________ test_m1_d02_required_null_rejected_nullable_fields_clearable _________
+
+client = <starlette.testclient.TestClient object at 0x113b7e780>
+
+    def test_m1_d02_required_null_rejected_nullable_fields_clearable(client):
+        headers = register(client)
+        original = create_record(client, headers)
+        endpoint = f"/api/v1/bp-records/{original['id']}"
+        for field in ['systolic', 'diastolic', 'measured_at']:
+            response = client.patch(endpoint, headers=headers, json={field: None})
+>           assert response.status_code == 422, response.text
+E           AssertionError: {"detail":"internal server error"}
+E           assert 500 == 422
+E            +  where 500 = <Response [500 Internal Server Error]>.status_code
+
+模块一作业交付包/缺陷证据/test_defect_regressions.py:93: AssertionError
+___________ test_m1_d03_timezone_equivalence_create_update_and_query ___________
+
+client = <starlette.testclient.TestClient object at 0x113bee750>
+
+    def test_m1_d03_timezone_equivalence_create_update_and_query(client):
+        headers = register(client)
+        created = create_record(client, headers)
+        ranges = [
+            ('2026-09-12T00:00:00Z', '2026-09-12T00:00:01Z'),
+            ('2026-09-12T08:00:00+08:00', '2026-09-12T08:00:01+08:00'),
+            ('2026-09-11T19:00:00-05:00', '2026-09-11T19:00:01-05:00'),
+        ]
+        for start, end in ranges:
+            response = client.get('/api/v1/bp-records', headers=headers, params={'start': start, 'end': end})
+            assert response.status_code == 200
+>           assert response.json()['total'] == 1, response.text
+E           AssertionError: {"total":0,"page":1,"size":20,"items":[]}
+E           assert 0 == 1
+
+模块一作业交付包/缺陷证据/test_defect_regressions.py:117: AssertionError
+=============================== warnings summary ===============================
+源项目/HealthAgent/backend/.venv/lib/python3.12/site-packages/starlette/testclient.py:40
+  /Users/leo/Desktop/软件测试课设/源项目/HealthAgent/backend/.venv/lib/python3.12/site-packages/starlette/testclient.py:40: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = typing.Callable[[], typing.ContextManager[anyio.abc.BlockingPortal]]
+
+源项目/HealthAgent/backend/.venv/lib/python3.12/site-packages/passlib/utils/__init__.py:854
+  /Users/leo/Desktop/软件测试课设/源项目/HealthAgent/backend/.venv/lib/python3.12/site-packages/passlib/utils/__init__.py:854: DeprecationWarning: 'crypt' is deprecated and slated for removal in Python 3.13
+    from crypt import crypt as _crypt
+
+模块一作业交付包/缺陷证据/test_defect_regressions.py::test_m1_d02_required_null_rejected_nullable_fields_clearable
+模块一作业交付包/缺陷证据/test_defect_regressions.py::test_m1_d02_required_null_rejected_nullable_fields_clearable
+模块一作业交付包/缺陷证据/test_defect_regressions.py::test_m1_d03_timezone_equivalence_create_update_and_query
+模块一作业交付包/缺陷证据/test_defect_regressions.py::test_m1_d03_timezone_equivalence_create_update_and_query
+  /Users/leo/Desktop/软件测试课设/源项目/HealthAgent/backend/.venv/lib/python3.12/site-packages/jose/jwt.py:311: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    now = timegm(datetime.utcnow().utctimetuple())
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+---- generated xml file: /Users/leo/Desktop/软件测试课设/模块一作业交付包/缺陷证据/修复前回归.xml -----
+=========================== short test summary info ============================
+FAILED 模块一作业交付包/缺陷证据/test_defect_regressions.py::test_m1_d01_full_password_and_legacy_compatibility
+FAILED 模块一作业交付包/缺陷证据/test_defect_regressions.py::test_m1_d02_required_null_rejected_nullable_fields_clearable
+FAILED 模块一作业交付包/缺陷证据/test_defect_regressions.py::test_m1_d03_timezone_equivalence_create_update_and_query
+======================== 3 failed, 6 warnings in 2.19s =========================

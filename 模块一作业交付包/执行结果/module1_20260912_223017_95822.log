@@ -1,0 +1,65 @@
+模块一：认证13条、个人信息7条、血压记录10条。
+日志：/Users/leo/Desktop/软件测试课设/模块一作业交付包/执行结果/module1_20260912_223017_95822.log
+JUnit：/Users/leo/Desktop/软件测试课设/模块一作业交付包/执行结果/module1_20260912_223017_95822.xml
+/Users/leo/Desktop/软件测试课设/源项目/HealthAgent/backend/.venv/lib/python3.12/site-packages/pytest_asyncio/plugin.py:208: PytestDeprecationWarning: The configuration option "asyncio_default_fixture_loop_scope" is unset.
+The event loop scope for asynchronous fixtures will default to the fixture caching scope. Future versions of pytest-asyncio will default the loop scope for asynchronous fixtures to function scope. Set the default fixture loop scope explicitly in order to avoid unexpected behavior in the future. Valid fixture loop scopes are: "function", "class", "module", "package", "session"
+
+  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))
+============================= test session starts ==============================
+platform darwin -- Python 3.12.14, pytest-8.3.3, pluggy-1.6.0 -- /Users/leo/Desktop/软件测试课设/源项目/HealthAgent/backend/.venv/bin/python
+cachedir: .pytest_cache
+rootdir: /Users/leo/Desktop/软件测试课设/源项目/HealthAgent/backend
+configfile: pyproject.toml
+plugins: asyncio-0.24.0, cov-5.0.0, anyio-4.15.1
+asyncio: mode=Mode.AUTO, default_loop_scope=None
+collecting ... collected 30 items
+
+tests/test_auth.py::TestRegister::test_register_success PASSED           [  3%]
+tests/test_auth.py::TestRegister::test_register_duplicate_username PASSED [  6%]
+tests/test_auth.py::TestRegister::test_register_duplicate_email PASSED   [ 10%]
+tests/test_auth.py::TestRegister::test_register_validation[bad0] PASSED  [ 13%]
+tests/test_auth.py::TestRegister::test_register_validation[bad1] PASSED  [ 16%]
+tests/test_auth.py::TestRegister::test_register_validation[bad2] PASSED  [ 20%]
+tests/test_auth.py::TestRegister::test_register_validation[bad3] PASSED  [ 23%]
+tests/test_auth.py::TestLogin::test_login_success PASSED                 [ 26%]
+tests/test_auth.py::TestLogin::test_login_wrong_password PASSED          [ 30%]
+tests/test_auth.py::TestLogin::test_login_unknown_user PASSED            [ 33%]
+tests/test_auth.py::TestRefresh::test_refresh_success PASSED             [ 36%]
+tests/test_auth.py::TestRefresh::test_refresh_rejects_access_token PASSED [ 40%]
+tests/test_auth.py::TestRefresh::test_refresh_invalid PASSED             [ 43%]
+tests/test_users.py::TestMe::test_me_requires_auth PASSED                [ 46%]
+tests/test_users.py::TestMe::test_me_ok PASSED                           [ 50%]
+tests/test_users.py::TestMe::test_me_invalid_token PASSED                [ 53%]
+tests/test_users.py::TestUpdateProfile::test_update_profile PASSED       [ 56%]
+tests/test_users.py::TestUpdateProfile::test_update_profile_invalid_gender PASSED [ 60%]
+tests/test_users.py::TestChangePassword::test_change_password_success PASSED [ 63%]
+tests/test_users.py::TestChangePassword::test_change_password_wrong_old PASSED [ 66%]
+tests/test_bp_records.py::TestAuth::test_requires_auth PASSED            [ 70%]
+tests/test_bp_records.py::TestCrud::test_create_and_get PASSED           [ 73%]
+tests/test_bp_records.py::TestCrud::test_list_pagination PASSED          [ 76%]
+tests/test_bp_records.py::TestCrud::test_update_and_delete PASSED        [ 80%]
+tests/test_bp_records.py::TestCrud::test_user_isolation PASSED           [ 83%]
+tests/test_bp_records.py::TestCrud::test_validation_out_of_range PASSED  [ 86%]
+tests/test_bp_records.py::TestStatsAndForecast::test_stats_empty PASSED  [ 90%]
+tests/test_bp_records.py::TestStatsAndForecast::test_stats_with_data PASSED [ 93%]
+tests/test_bp_records.py::TestStatsAndForecast::test_forecast_insufficient PASSED [ 96%]
+tests/test_bp_records.py::TestStatsAndForecast::test_forecast_with_data PASSED [100%]
+
+=============================== warnings summary ===============================
+.venv/lib/python3.12/site-packages/starlette/testclient.py:40
+  /Users/leo/Desktop/软件测试课设/源项目/HealthAgent/backend/.venv/lib/python3.12/site-packages/starlette/testclient.py:40: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = typing.Callable[[], typing.ContextManager[anyio.abc.BlockingPortal]]
+
+.venv/lib/python3.12/site-packages/passlib/utils/__init__.py:854
+  /Users/leo/Desktop/软件测试课设/源项目/HealthAgent/backend/.venv/lib/python3.12/site-packages/passlib/utils/__init__.py:854: DeprecationWarning: 'crypt' is deprecated and slated for removal in Python 3.13
+    from crypt import crypt as _crypt
+
+tests/test_auth.py: 2 warnings
+tests/test_users.py: 5 warnings
+tests/test_bp_records.py: 28 warnings
+  /Users/leo/Desktop/软件测试课设/源项目/HealthAgent/backend/.venv/lib/python3.12/site-packages/jose/jwt.py:311: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    now = timegm(datetime.utcnow().utctimetuple())
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: /Users/leo/Desktop/软件测试课设/模块一作业交付包/执行结果/module1_20260912_223017_95822.xml -
+======================= 30 passed, 37 warnings in 7.20s ========================

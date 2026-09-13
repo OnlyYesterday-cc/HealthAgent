@@ -1,6 +1,5 @@
 """Run the selected functional cases or the separate D02/D03 checks."""
 import argparse
-import json
 import os
 from pathlib import Path
 import subprocess
@@ -17,7 +16,7 @@ def main():
     out = args.output_dir.resolve()
     out.mkdir(parents=True, exist_ok=True)
     if args.suite == 'functional':
-        nodes = json.loads((HERE / '用例节点.json').read_text())
+        nodes = ['tests/test_users.py::TestMe::test_me_invalid_token', 'tests/test_users.py::TestUpdateProfile::test_update_profile', 'tests/test_users.py::TestUpdateProfile::test_update_profile_invalid_gender', 'tests/test_users.py::TestChangePassword::test_change_password_success', 'tests/test_users.py::TestChangePassword::test_change_password_wrong_old', 'tests/test_bp_records.py::TestAuth::test_requires_auth', 'tests/test_bp_records.py::TestCrud::test_create_and_get', 'tests/test_bp_records.py::TestCrud::test_list_pagination', 'tests/test_bp_records.py::TestCrud::test_update_and_delete', 'tests/test_bp_records.py::TestCrud::test_user_isolation', 'tests/test_bp_records.py::TestCrud::test_validation_out_of_range', 'tests/test_bp_records.py::TestStatsAndForecast::test_stats_empty', 'tests/test_bp_records.py::TestStatsAndForecast::test_stats_with_data', 'tests/test_bp_records.py::TestStatsAndForecast::test_forecast_insufficient', 'tests/test_bp_records.py::TestStatsAndForecast::test_forecast_with_data']
     else:
         nodes = [str(HERE / 'defect_checks.py')]
     env = os.environ.copy()
