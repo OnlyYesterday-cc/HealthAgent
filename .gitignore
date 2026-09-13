@@ -6,7 +6,6 @@ dist/
 .venv/
 .dependency-cache/
 backend/models/*
-!backend/models/bge-small-zh-v1.5/
 .DS_Store
 backend/storage/kb-bge-small-zh-v1.5.sqlite*
 venv/

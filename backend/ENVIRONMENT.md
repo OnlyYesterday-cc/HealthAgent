@@ -29,10 +29,10 @@ uv pip install --python .venv/bin/python -r requirements.txt
 
 ## 模型与配置
 
-- 首次配置时从 `.env.example` 复制为 `.env`，设置 JWT 密钥和 `DASHSCOPE_CHAT_API_KEY`；已有 `.env` 时保留其中配置。
-- 本地向量模型目录为 `models/bge-small-zh-v1.5`，模型权重不包含在 requirements 中。迁移项目时需同时复制这个目录，或从模型官方仓库获取对应文件；参见 `LOCAL_EMBEDDING.md`。
+- 首次配置时从 `.env.example` 复制为 `.env`，设置 JWT 密钥、`DASHSCOPE_CHAT_API_KEY` 和向量服务使用的 `DASHSCOPE_API_KEY`；已有 `.env` 时保留其中配置。
+- 默认使用云端 DashScope 向量服务（`EMBEDDING_PROVIDER=dashscope`），无需下载或复制本地 BGE 模型。模型目录不再随仓库提供。
 - OCR 使用 Qwen 3.8 Flash，关闭思考；文字问诊使用同一套餐，思考强度 low。
-- 本地检索使用 PyTorch + Transformers，不需要向量 API Key。
+- 本地向量推理仅作为可选功能保留，恢复方法见 `LOCAL_EMBEDDING.md`。切换向量模型后需使用独立索引路径并重新入库。
 - 默认 SQLite，无需安装 PostgreSQL 或 Docker。
 
 首次构建本地知识库，在 backend 目录执行：
