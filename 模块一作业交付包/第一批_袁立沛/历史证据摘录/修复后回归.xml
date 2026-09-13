@@ -1,0 +1,2 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<testsuites><testsuite name="pytest" errors="0" failures="0" skipped="0" tests="2" time="0.514" timestamp="2026-09-12T22:30:06.224195+08:00" hostname="LeodeMacBook-Air.local"><testcase classname="模块一作业交付包.缺陷证据.test_defect_regressions" name="test_m1_d02_required_null_rejected_nullable_fields_clearable" time="0.258"/><testcase classname="模块一作业交付包.缺陷证据.test_defect_regressions" name="test_m1_d03_timezone_equivalence_create_update_and_query" time="0.256"/></testsuite></testsuites>

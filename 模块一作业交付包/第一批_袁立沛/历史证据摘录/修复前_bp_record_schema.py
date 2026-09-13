@@ -3,7 +3,7 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Literal, Optional
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class BpRecordBase(BaseModel):
@@ -26,14 +26,6 @@ class BpRecordUpdate(BaseModel):
     heart_rate: Optional[int] = Field(default=None, ge=30, le=220)
     measured_at: Optional[datetime] = None
     note: Optional[str] = Field(default=None, max_length=500)
-
-    @field_validator("systolic", "diastolic", "measured_at")
-    @classmethod
-    def required_fields_cannot_be_null(cls, value):
-        # Defaults are not validated: omission still allows partial updates.
-        if value is None:
-            raise ValueError("field cannot be null")
-        return value
 
 
 class BpRecordOut(BpRecordBase):

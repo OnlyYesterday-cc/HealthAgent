@@ -1,0 +1,53 @@
+/Users/leo/Desktop/软件测试课设/源项目/HealthAgent/backend/.venv/lib/python3.12/site-packages/pytest_asyncio/plugin.py:208: PytestDeprecationWarning: The configuration option "asyncio_default_fixture_loop_scope" is unset.
+The event loop scope for asynchronous fixtures will default to the fixture caching scope. Future versions of pytest-asyncio will default the loop scope for asynchronous fixtures to function scope. Set the default fixture loop scope explicitly in order to avoid unexpected behavior in the future. Valid fixture loop scopes are: "function", "class", "module", "package", "session"
+
+  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))
+============================= test session starts ==============================
+platform darwin -- Python 3.12.14, pytest-8.3.3, pluggy-1.6.0 -- /Users/leo/Desktop/软件测试课设/源项目/HealthAgent/backend/.venv/bin/python
+rootdir: /private/tmp/healthagent-yuan-batch-20260913
+plugins: asyncio-0.24.0, cov-5.0.0, anyio-4.15.1
+asyncio: mode=Mode.STRICT, default_loop_scope=None
+collecting ... collected 2 items
+
+../模块一作业交付包/第一批_袁立沛/defect_checks.py::test_m1_d02_required_null_rejected_nullable_fields_clearable PASSED [ 50%]
+../模块一作业交付包/第一批_袁立沛/defect_checks.py::test_m1_d03_timezone_equivalence_create_update_and_query FAILED [100%]
+
+=================================== FAILURES ===================================
+___________ test_m1_d03_timezone_equivalence_create_update_and_query ___________
+
+client = <starlette.testclient.TestClient object at 0x117c8a270>
+
+    def test_m1_d03_timezone_equivalence_create_update_and_query(client):
+        headers = register(client)
+        created = create_record(client, headers)
+        ranges = [
+            ('2026-09-12T00:00:00Z', '2026-09-12T00:00:01Z'),
+            ('2026-09-12T08:00:00+08:00', '2026-09-12T08:00:01+08:00'),
+            ('2026-09-11T19:00:00-05:00', '2026-09-11T19:00:01-05:00'),
+        ]
+        for start, end in ranges:
+            response = client.get('/api/v1/bp-records', headers=headers, params={'start': start, 'end': end})
+            assert response.status_code == 200
+>           assert response.json()['total'] == 1, response.text
+E           AssertionError: {"total":0,"page":1,"size":20,"items":[]}
+E           assert 0 == 1
+
+../模块一作业交付包/第一批_袁立沛/defect_checks.py:94: AssertionError
+=============================== warnings summary ===============================
+../../../../Users/leo/Desktop/软件测试课设/源项目/HealthAgent/backend/.venv/lib/python3.12/site-packages/starlette/testclient.py:40
+  /Users/leo/Desktop/软件测试课设/源项目/HealthAgent/backend/.venv/lib/python3.12/site-packages/starlette/testclient.py:40: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = typing.Callable[[], typing.ContextManager[anyio.abc.BlockingPortal]]
+
+../../../../Users/leo/Desktop/软件测试课设/源项目/HealthAgent/backend/.venv/lib/python3.12/site-packages/passlib/utils/__init__.py:854
+  /Users/leo/Desktop/软件测试课设/源项目/HealthAgent/backend/.venv/lib/python3.12/site-packages/passlib/utils/__init__.py:854: DeprecationWarning: 'crypt' is deprecated and slated for removal in Python 3.13
+    from crypt import crypt as _crypt
+
+模块一作业交付包/第一批_袁立沛/defect_checks.py: 11 warnings
+  /Users/leo/Desktop/软件测试课设/源项目/HealthAgent/backend/.venv/lib/python3.12/site-packages/jose/jwt.py:311: DeprecationWarning: datetime.datetime.utcnow() is deprecated and scheduled for removal in a future version. Use timezone-aware objects to represent datetimes in UTC: datetime.datetime.now(datetime.UTC).
+    now = timegm(datetime.utcnow().utctimetuple())
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: /private/tmp/healthagent-yuan-batch-20260913/模块一作业交付包/第一批_袁立沛/执行结果/defects.xml -
+=========================== short test summary info ============================
+FAILED ../模块一作业交付包/第一批_袁立沛/defect_checks.py::test_m1_d03_timezone_equivalence_create_update_and_query
+=================== 1 failed, 1 passed, 13 warnings in 1.03s ===================

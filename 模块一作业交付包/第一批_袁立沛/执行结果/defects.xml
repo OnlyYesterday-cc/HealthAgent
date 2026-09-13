@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="2" time="1.032" timestamp="2026-09-13T08:10:47.204843-07:00" hostname="LeodeMacBook-Air.local"><testcase classname="模块一作业交付包.第一批_袁立沛.defect_checks" name="test_m1_d02_required_null_rejected_nullable_fields_clearable" time="0.289" /><testcase classname="模块一作业交付包.第一批_袁立沛.defect_checks" name="test_m1_d03_timezone_equivalence_create_update_and_query" time="0.260"><failure message="AssertionError: {&quot;total&quot;:0,&quot;page&quot;:1,&quot;size&quot;:20,&quot;items&quot;:[]}&#10;assert 0 == 1">client = &lt;starlette.testclient.TestClient object at 0x117c8a270&gt;
+
+    def test_m1_d03_timezone_equivalence_create_update_and_query(client):
+        headers = register(client)
+        created = create_record(client, headers)
+        ranges = [
+            ('2026-09-12T00:00:00Z', '2026-09-12T00:00:01Z'),
+            ('2026-09-12T08:00:00+08:00', '2026-09-12T08:00:01+08:00'),
+            ('2026-09-11T19:00:00-05:00', '2026-09-11T19:00:01-05:00'),
+        ]
+        for start, end in ranges:
+            response = client.get('/api/v1/bp-records', headers=headers, params={'start': start, 'end': end})
+            assert response.status_code == 200
+&gt;           assert response.json()['total'] == 1, response.text
+E           AssertionError: {"total":0,"page":1,"size":20,"items":[]}
+E           assert 0 == 1
+
+../模块一作业交付包/第一批_袁立沛/defect_checks.py:94: AssertionError</failure></testcase></testsuite></testsuites>
