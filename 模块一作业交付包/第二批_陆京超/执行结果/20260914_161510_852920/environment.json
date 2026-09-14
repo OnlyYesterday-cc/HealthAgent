@@ -1,0 +1,32 @@
+{
+  "executed_at": "2026-09-14T16:15:10.902881+08:00",
+  "revision": "8b63db8080eafb8565a84db5ecee11e7be755406",
+  "platform": "Windows-10-10.0.26200-SP0",
+  "python": "3.10.11",
+  "sqlite": "3.40.1",
+  "packages": {
+    "pytest": "8.3.3",
+    "fastapi": "0.115.0",
+    "sqlalchemy": "2.0.52",
+    "pydantic": "2.13.5",
+    "passlib": "1.7.4",
+    "bcrypt": "4.0.1"
+  },
+  "suites": {
+    "module1": {
+      "command": [
+        "F:\\研究生课程作业或设计\\软件质量测试\\HealthAgent\\backend\\.venv\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "-v",
+        "-p",
+        "no:cacheprovider",
+        "--junitxml=F:\\研究生课程作业或设计\\软件质量测试\\HealthAgent\\模块一作业交付包\\第二批_陆京超\\执行结果\\20260914_161510_852920\\module1.xml",
+        "tests/test_auth.py",
+        "tests/test_users.py",
+        "tests/test_bp_records.py"
+      ],
+      "exit_code": 0
+    }
+  }
+}

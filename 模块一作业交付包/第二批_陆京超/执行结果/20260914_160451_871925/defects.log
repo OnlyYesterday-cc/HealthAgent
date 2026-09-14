@@ -1,0 +1,23 @@
+F:\研究生课程作业或设计\软件质量测试\HealthAgent\backend\.venv\lib\site-packages\pytest_asyncio\plugin.py:208: PytestDeprecationWarning: The configuration option "asyncio_default_fixture_loop_scope" is unset.
+The event loop scope for asynchronous fixtures will default to the fixture caching scope. Future versions of pytest-asyncio will default the loop scope for asynchronous fixtures to function scope. Set the default fixture loop scope explicitly in order to avoid unexpected behavior in the future. Valid fixture loop scopes are: "function", "class", "module", "package", "session"
+
+  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))
+============================= test session starts =============================
+platform win32 -- Python 3.10.11, pytest-8.3.3, pluggy-1.6.0 -- F:\研究生课程作业或设计\软件质量测试\HealthAgent\backend\.venv\Scripts\python.exe
+rootdir: F:\研究生课程作业或设计\软件质量测试\HealthAgent
+plugins: anyio-4.15.1, asyncio-0.24.0, cov-5.0.0
+asyncio: mode=strict, default_loop_scope=None
+collecting ... collected 3 items
+
+..\模块一作业交付包\缺陷证据\test_defect_regressions.py::test_m1_d01_full_password_and_legacy_compatibility PASSED [ 33%]
+..\模块一作业交付包\缺陷证据\test_defect_regressions.py::test_m1_d02_required_null_rejected_nullable_fields_clearable PASSED [ 66%]
+..\模块一作业交付包\缺陷证据\test_defect_regressions.py::test_m1_d03_timezone_equivalence_create_update_and_query PASSED [100%]
+
+============================== warnings summary ===============================
+.venv\lib\site-packages\starlette\testclient.py:40
+  F:\研究生课程作业或设计\软件质量测试\HealthAgent\backend\.venv\lib\site-packages\starlette\testclient.py:40: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = typing.Callable[[], typing.ContextManager[anyio.abc.BlockingPortal]]
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: F:\研究生课程作业或设计\软件质量测试\HealthAgent\模块一作业交付包\第二批_陆京超\执行结果\20260914_160451_871925\defects.xml -
+======================== 3 passed, 1 warning in 16.84s ========================
