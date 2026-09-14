@@ -69,6 +69,11 @@ def test_m1_d01_full_password_and_legacy_compatibility(client):
         headers = register(client, username, prefix + 'X')
         assert login(client, username, prefix + 'Y').status_code == 401
         assert login(client, username, prefix + 'X').status_code == 200
+        rejected = client.post('/api/v1/users/me/password', headers=headers, json={
+            'old_password': prefix + 'Y', 'new_password': prefix + 'Z',
+        })
+        assert rejected.status_code == 400, rejected.text
+        assert login(client, username, prefix + 'X').status_code == 200
         changed = client.post('/api/v1/users/me/password', headers=headers, json={
             'old_password': prefix + 'X', 'new_password': prefix + 'Z',
         })
@@ -121,15 +126,29 @@ def test_m1_d03_timezone_equivalence_create_update_and_query(client):
     assert parsed == datetime(2026, 9, 12, tzinfo=timezone.utc)
     endpoint = f"/api/v1/bp-records/{created['id']}"
     updated = client.patch(endpoint, headers=headers, json={'measured_at': '2026-09-13T05:30:00+05:30'})
-    assert updated.status_code == 200
+    assert updated.status_code == 200, updated.text
+    parsed = datetime.fromisoformat(updated.json()['measured_at'].replace('Z', '+00:00'))
+    assert parsed == datetime(2026, 9, 13, tzinfo=timezone.utc)
     response = client.get('/api/v1/bp-records', headers=headers, params={
         'start': '2026-09-13T00:00:00Z', 'end': '2026-09-13T00:00:01Z',
     })
-    assert response.json()['total'] == 1
+    assert response.status_code == 200, response.text
+    assert response.json()['total'] == 1, response.text
+    assert response.json()['items'][0]['id'] == created['id']
+    response = client.get('/api/v1/bp-records', headers=headers, params={
+        'start': ranges[0][0], 'end': ranges[0][1],
+    })
+    assert response.status_code == 200, response.text
+    assert response.json()['total'] == 0, response.text
+    assert response.json()['items'] == []
     # Existing API accepts naive datetimes; explicitly retain UTC interpretation.
     updated = client.patch(endpoint, headers=headers, json={'measured_at': '2026-09-14T00:00:00'})
-    assert updated.status_code == 200
+    assert updated.status_code == 200, updated.text
+    parsed = datetime.fromisoformat(updated.json()['measured_at'].replace('Z', '+00:00'))
+    assert parsed == datetime(2026, 9, 14, tzinfo=timezone.utc)
     response = client.get('/api/v1/bp-records', headers=headers, params={
         'start': '2026-09-14T00:00:00Z', 'end': '2026-09-14T00:00:01Z',
     })
-    assert response.json()['total'] == 1
+    assert response.status_code == 200, response.text
+    assert response.json()['total'] == 1, response.text
+    assert response.json()['items'][0]['id'] == created['id']
