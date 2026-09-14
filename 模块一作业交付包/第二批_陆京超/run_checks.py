@@ -27,7 +27,7 @@ SUITES = {
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("suite", choices=[*SUITES, "all"])
+    parser.add_argument("suite", nargs="?", default="functional", choices=[*SUITES, "all"])
     parser.add_argument("--output-dir", type=Path)
     args = parser.parse_args()
     out = (args.output_dir or HERE / "执行结果" / datetime.now().strftime("%Y%m%d_%H%M%S_%f")).resolve()
