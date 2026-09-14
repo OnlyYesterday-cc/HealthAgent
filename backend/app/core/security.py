@@ -49,3 +49,15 @@ def decode_token(token: str) -> dict[str, Any]:
         return jwt.decode(token, settings.jwt_secret, algorithms=[settings.jwt_algorithm])
     except JWTError as e:
         raise ValueError(f"invalid token: {e}") from e
+
+
+def token_user_id(payload: dict[str, Any]) -> int:
+    subject = payload.get("sub")
+    # Bound conversion before querying: SQLite integer bindings are signed 64-bit.
+    if (not isinstance(subject, str) or not 1 <= len(subject) <= 19
+            or not subject.isascii() or not subject.isdecimal()):
+        raise ValueError("invalid token subject")
+    user_id = int(subject)
+    if not 1 <= user_id <= 2**63 - 1:
+        raise ValueError("invalid token subject")
+    return user_id

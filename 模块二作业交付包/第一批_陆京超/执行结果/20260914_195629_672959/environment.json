@@ -1,0 +1,34 @@
+{
+  "executed_at": "2026-09-14T19:56:29.678521+08:00",
+  "revision": "79e6cace1eb8f8694f9903d35c4a1d3f60ae2522",
+  "platform": "Windows-10-10.0.26200-SP0",
+  "python": "3.10.11",
+  "packages": {
+    "pytest": "8.3.3",
+    "fastapi": "0.115.0",
+    "sqlalchemy": "2.0.52",
+    "python-jose": "3.3.0"
+  },
+  "command": [
+    "F:\\研究生课程作业或设计\\软件质量测试\\HealthAgent\\backend\\.venv\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-v",
+    "-p",
+    "no:cacheprovider",
+    "--junitxml=F:\\研究生课程作业或设计\\软件质量测试\\HealthAgent\\模块二作业交付包\\第一批_陆京超\\执行结果\\20260914_195629_672959\\results.xml",
+    "tests/test_auth.py",
+    "tests/test_users.py",
+    "tests/test_bp_records.py",
+    "tests/test_security.py",
+    "F:\\研究生课程作业或设计\\软件质量测试\\HealthAgent\\模块一作业交付包\\缺陷证据\\test_defect_regressions.py"
+  ],
+  "suite": "regression",
+  "sha256": {
+    "backend/tests/module2/test_auth_ai.py": "0e73ad5b0e9befd43c2716fd171c1495bd678801c20264c9ee7b66adbca0a157",
+    "backend/app/core/security.py": "bf35b51fcb1a6b326d6bed9135b7b30884b57a6185f99686ee56dbd4d71d2340",
+    "backend/app/api/deps.py": "742d2605b820f6748e5ac7cae949812e27bd336187249b3c036bbfd499a9fdd4",
+    "backend/app/api/v1/auth.py": "8be5e2fa84f13e287489154192490ad03f0d6285023aac6a718d87415e246b21"
+  },
+  "exit_code": 0
+}

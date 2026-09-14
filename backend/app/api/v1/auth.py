@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 
-from app.core.security import create_access_token, create_refresh_token, decode_token
+from app.core.security import create_access_token, create_refresh_token, decode_token, token_user_id
 from app.db.session import get_db
 from app.schemas.user import (
     AuthResponse,
@@ -46,11 +46,12 @@ def login(payload: UserLogin, db: Session = Depends(get_db)):
 def refresh(payload: RefreshRequest, db: Session = Depends(get_db)):
     try:
         data = decode_token(payload.refresh_token)
+        user_id = token_user_id(data)
     except ValueError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="invalid token")
     if data.get("type") != "refresh":
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="wrong token type")
-    user = user_service.get_by_id(db, int(data["sub"]))
+    user = user_service.get_by_id(db, user_id)
     if user is None:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="user not found")
     return _tokens_for(user.id)

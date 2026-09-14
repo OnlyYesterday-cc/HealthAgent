@@ -1,0 +1,213 @@
+F:\研究生课程作业或设计\软件质量测试\HealthAgent\backend\.venv\lib\site-packages\pytest_asyncio\plugin.py:208: PytestDeprecationWarning: The configuration option "asyncio_default_fixture_loop_scope" is unset.
+The event loop scope for asynchronous fixtures will default to the fixture caching scope. Future versions of pytest-asyncio will default the loop scope for asynchronous fixtures to function scope. Set the default fixture loop scope explicitly in order to avoid unexpected behavior in the future. Valid fixture loop scopes are: "function", "class", "module", "package", "session"
+
+  warnings.warn(PytestDeprecationWarning(_DEFAULT_FIXTURE_LOOP_SCOPE_UNSET))
+============================= test session starts =============================
+platform win32 -- Python 3.10.11, pytest-8.3.3, pluggy-1.6.0 -- F:\研究生课程作业或设计\软件质量测试\HealthAgent\backend\.venv\Scripts\python.exe
+rootdir: F:\研究生课程作业或设计\软件质量测试\HealthAgent\backend
+configfile: pyproject.toml
+plugins: anyio-4.15.1, asyncio-0.24.0, cov-5.0.0
+asyncio: mode=auto, default_loop_scope=None
+collecting ... collected 10 items
+
+tests/module2/test_auth_ai.py::test_invalid_credentials_return_401[M2-TC-001] FAILED [ 10%]
+tests/module2/test_auth_ai.py::test_invalid_credentials_return_401[M2-TC-002] FAILED [ 20%]
+tests/module2/test_auth_ai.py::test_invalid_credentials_return_401[M2-TC-003] FAILED [ 30%]
+tests/module2/test_auth_ai.py::test_invalid_credentials_return_401[M2-TC-004] PASSED [ 40%]
+tests/module2/test_auth_ai.py::test_invalid_credentials_return_401[M2-TC-005] PASSED [ 50%]
+tests/module2/test_auth_ai.py::test_invalid_credentials_return_401[M2-TC-006] PASSED [ 60%]
+tests/module2/test_auth_ai.py::test_invalid_credentials_return_401[M2-TC-007] FAILED [ 70%]
+tests/module2/test_auth_ai.py::test_invalid_credentials_return_401[M2-TC-008] FAILED [ 80%]
+tests/module2/test_auth_ai.py::test_nickname_length_boundary_preserves_previous_value[M2-TC-009] PASSED [ 90%]
+tests/module2/test_auth_ai.py::test_unicode_nickname_boundary_and_clear[M2-TC-010] PASSED [100%]
+
+================================== FAILURES ===================================
+_______________ test_invalid_credentials_return_401[M2-TC-001] ________________
+
+http = <starlette.testclient.TestClient object at 0x0000014FFFDC1A50>
+token_type = 'access', subject = 'not-an-integer', expired = False
+
+    @pytest.mark.parametrize(
+        "token_type,subject,expired",
+        [
+            pytest.param("access", "not-an-integer", False, id="M2-TC-001"),
+            pytest.param("refresh", "not-an-integer", False, id="M2-TC-002"),
+            pytest.param("refresh", None, False, id="M2-TC-003"),
+            pytest.param("access", "1", True, id="M2-TC-004"),
+            pytest.param("refresh", "1", True, id="M2-TC-005"),
+            pytest.param("access", None, False, id="M2-TC-006"),
+            pytest.param("access", str(2**63), False, id="M2-TC-007"),
+            pytest.param("refresh", str(2**63), False, id="M2-TC-008"),
+        ],
+    )
+    def test_invalid_credentials_return_401(http, token_type, subject, expired):
+        settings = get_settings()
+        now = int(time.time())
+        claims = {"type": token_type, "iat": now - 120, "exp": now - 60 if expired else now + 300}
+        if subject is not None:
+            claims["sub"] = subject
+        token = jwt.encode(claims, settings.jwt_secret, algorithm=settings.jwt_algorithm)
+        if token_type == "access":
+            response = http.get("/api/v1/users/me", headers={"Authorization": "Bearer " + token})
+        else:
+            response = http.post("/api/v1/auth/refresh", json={"refresh_token": token})
+>       assert response.status_code == 401, response.text
+E       AssertionError: {"detail":"internal server error"}
+E       assert 500 == 401
+E        +  where 500 = <Response [500 Internal Server Error]>.status_code
+
+tests\module2\test_auth_ai.py:45: AssertionError
+_______________ test_invalid_credentials_return_401[M2-TC-002] ________________
+
+http = <starlette.testclient.TestClient object at 0x0000014FFFDE2B60>
+token_type = 'refresh', subject = 'not-an-integer', expired = False
+
+    @pytest.mark.parametrize(
+        "token_type,subject,expired",
+        [
+            pytest.param("access", "not-an-integer", False, id="M2-TC-001"),
+            pytest.param("refresh", "not-an-integer", False, id="M2-TC-002"),
+            pytest.param("refresh", None, False, id="M2-TC-003"),
+            pytest.param("access", "1", True, id="M2-TC-004"),
+            pytest.param("refresh", "1", True, id="M2-TC-005"),
+            pytest.param("access", None, False, id="M2-TC-006"),
+            pytest.param("access", str(2**63), False, id="M2-TC-007"),
+            pytest.param("refresh", str(2**63), False, id="M2-TC-008"),
+        ],
+    )
+    def test_invalid_credentials_return_401(http, token_type, subject, expired):
+        settings = get_settings()
+        now = int(time.time())
+        claims = {"type": token_type, "iat": now - 120, "exp": now - 60 if expired else now + 300}
+        if subject is not None:
+            claims["sub"] = subject
+        token = jwt.encode(claims, settings.jwt_secret, algorithm=settings.jwt_algorithm)
+        if token_type == "access":
+            response = http.get("/api/v1/users/me", headers={"Authorization": "Bearer " + token})
+        else:
+            response = http.post("/api/v1/auth/refresh", json={"refresh_token": token})
+>       assert response.status_code == 401, response.text
+E       AssertionError: {"detail":"internal server error"}
+E       assert 500 == 401
+E        +  where 500 = <Response [500 Internal Server Error]>.status_code
+
+tests\module2\test_auth_ai.py:45: AssertionError
+_______________ test_invalid_credentials_return_401[M2-TC-003] ________________
+
+http = <starlette.testclient.TestClient object at 0x0000014F8002B160>
+token_type = 'refresh', subject = None, expired = False
+
+    @pytest.mark.parametrize(
+        "token_type,subject,expired",
+        [
+            pytest.param("access", "not-an-integer", False, id="M2-TC-001"),
+            pytest.param("refresh", "not-an-integer", False, id="M2-TC-002"),
+            pytest.param("refresh", None, False, id="M2-TC-003"),
+            pytest.param("access", "1", True, id="M2-TC-004"),
+            pytest.param("refresh", "1", True, id="M2-TC-005"),
+            pytest.param("access", None, False, id="M2-TC-006"),
+            pytest.param("access", str(2**63), False, id="M2-TC-007"),
+            pytest.param("refresh", str(2**63), False, id="M2-TC-008"),
+        ],
+    )
+    def test_invalid_credentials_return_401(http, token_type, subject, expired):
+        settings = get_settings()
+        now = int(time.time())
+        claims = {"type": token_type, "iat": now - 120, "exp": now - 60 if expired else now + 300}
+        if subject is not None:
+            claims["sub"] = subject
+        token = jwt.encode(claims, settings.jwt_secret, algorithm=settings.jwt_algorithm)
+        if token_type == "access":
+            response = http.get("/api/v1/users/me", headers={"Authorization": "Bearer " + token})
+        else:
+            response = http.post("/api/v1/auth/refresh", json={"refresh_token": token})
+>       assert response.status_code == 401, response.text
+E       AssertionError: {"detail":"internal server error"}
+E       assert 500 == 401
+E        +  where 500 = <Response [500 Internal Server Error]>.status_code
+
+tests\module2\test_auth_ai.py:45: AssertionError
+_______________ test_invalid_credentials_return_401[M2-TC-007] ________________
+
+http = <starlette.testclient.TestClient object at 0x0000014F800BF850>
+token_type = 'access', subject = '9223372036854775808', expired = False
+
+    @pytest.mark.parametrize(
+        "token_type,subject,expired",
+        [
+            pytest.param("access", "not-an-integer", False, id="M2-TC-001"),
+            pytest.param("refresh", "not-an-integer", False, id="M2-TC-002"),
+            pytest.param("refresh", None, False, id="M2-TC-003"),
+            pytest.param("access", "1", True, id="M2-TC-004"),
+            pytest.param("refresh", "1", True, id="M2-TC-005"),
+            pytest.param("access", None, False, id="M2-TC-006"),
+            pytest.param("access", str(2**63), False, id="M2-TC-007"),
+            pytest.param("refresh", str(2**63), False, id="M2-TC-008"),
+        ],
+    )
+    def test_invalid_credentials_return_401(http, token_type, subject, expired):
+        settings = get_settings()
+        now = int(time.time())
+        claims = {"type": token_type, "iat": now - 120, "exp": now - 60 if expired else now + 300}
+        if subject is not None:
+            claims["sub"] = subject
+        token = jwt.encode(claims, settings.jwt_secret, algorithm=settings.jwt_algorithm)
+        if token_type == "access":
+            response = http.get("/api/v1/users/me", headers={"Authorization": "Bearer " + token})
+        else:
+            response = http.post("/api/v1/auth/refresh", json={"refresh_token": token})
+>       assert response.status_code == 401, response.text
+E       AssertionError: {"detail":"internal server error"}
+E       assert 500 == 401
+E        +  where 500 = <Response [500 Internal Server Error]>.status_code
+
+tests\module2\test_auth_ai.py:45: AssertionError
+_______________ test_invalid_credentials_return_401[M2-TC-008] ________________
+
+http = <starlette.testclient.TestClient object at 0x0000014F801770D0>
+token_type = 'refresh', subject = '9223372036854775808', expired = False
+
+    @pytest.mark.parametrize(
+        "token_type,subject,expired",
+        [
+            pytest.param("access", "not-an-integer", False, id="M2-TC-001"),
+            pytest.param("refresh", "not-an-integer", False, id="M2-TC-002"),
+            pytest.param("refresh", None, False, id="M2-TC-003"),
+            pytest.param("access", "1", True, id="M2-TC-004"),
+            pytest.param("refresh", "1", True, id="M2-TC-005"),
+            pytest.param("access", None, False, id="M2-TC-006"),
+            pytest.param("access", str(2**63), False, id="M2-TC-007"),
+            pytest.param("refresh", str(2**63), False, id="M2-TC-008"),
+        ],
+    )
+    def test_invalid_credentials_return_401(http, token_type, subject, expired):
+        settings = get_settings()
+        now = int(time.time())
+        claims = {"type": token_type, "iat": now - 120, "exp": now - 60 if expired else now + 300}
+        if subject is not None:
+            claims["sub"] = subject
+        token = jwt.encode(claims, settings.jwt_secret, algorithm=settings.jwt_algorithm)
+        if token_type == "access":
+            response = http.get("/api/v1/users/me", headers={"Authorization": "Bearer " + token})
+        else:
+            response = http.post("/api/v1/auth/refresh", json={"refresh_token": token})
+>       assert response.status_code == 401, response.text
+E       AssertionError: {"detail":"internal server error"}
+E       assert 500 == 401
+E        +  where 500 = <Response [500 Internal Server Error]>.status_code
+
+tests\module2\test_auth_ai.py:45: AssertionError
+============================== warnings summary ===============================
+.venv\lib\site-packages\starlette\testclient.py:40
+  F:\研究生课程作业或设计\软件质量测试\HealthAgent\backend\.venv\lib\site-packages\starlette\testclient.py:40: DeprecationWarning: The anyio.abc.BlockingPortal alias is deprecated, use anyio.from_thread.BlockingPortal instead.
+    _PortalFactoryType = typing.Callable[[], typing.ContextManager[anyio.abc.BlockingPortal]]
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: F:\研究生课程作业或设计\软件质量测试\HealthAgent\模块二作业交付包\第一批_陆京超\执行结果\20260914_195556_620141\results.xml -
+=========================== short test summary info ===========================
+FAILED tests/module2/test_auth_ai.py::test_invalid_credentials_return_401[M2-TC-001]
+FAILED tests/module2/test_auth_ai.py::test_invalid_credentials_return_401[M2-TC-002]
+FAILED tests/module2/test_auth_ai.py::test_invalid_credentials_return_401[M2-TC-003]
+FAILED tests/module2/test_auth_ai.py::test_invalid_credentials_return_401[M2-TC-007]
+FAILED tests/module2/test_auth_ai.py::test_invalid_credentials_return_401[M2-TC-008]
+=================== 5 failed, 5 passed, 1 warning in 1.89s ====================

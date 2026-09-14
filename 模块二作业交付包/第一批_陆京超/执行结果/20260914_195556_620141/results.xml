@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="5" skipped="0" tests="10" time="1.893" timestamp="2026-09-14T19:55:58.779101+08:00" hostname="LAPTOP-2IP98V3B"><testcase classname="tests.module2.test_auth_ai" name="test_invalid_credentials_return_401[M2-TC-001]" time="0.064"><failure message="AssertionError: {&quot;detail&quot;:&quot;internal server error&quot;}&#10;assert 500 == 401&#10; +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code">http = &lt;starlette.testclient.TestClient object at 0x0000014FFFDC1A50&gt;
+token_type = 'access', subject = 'not-an-integer', expired = False
+
+    @pytest.mark.parametrize(
+        "token_type,subject,expired",
+        [
+            pytest.param("access", "not-an-integer", False, id="M2-TC-001"),
+            pytest.param("refresh", "not-an-integer", False, id="M2-TC-002"),
+            pytest.param("refresh", None, False, id="M2-TC-003"),
+            pytest.param("access", "1", True, id="M2-TC-004"),
+            pytest.param("refresh", "1", True, id="M2-TC-005"),
+            pytest.param("access", None, False, id="M2-TC-006"),
+            pytest.param("access", str(2**63), False, id="M2-TC-007"),
+            pytest.param("refresh", str(2**63), False, id="M2-TC-008"),
+        ],
+    )
+    def test_invalid_credentials_return_401(http, token_type, subject, expired):
+        settings = get_settings()
+        now = int(time.time())
+        claims = {"type": token_type, "iat": now - 120, "exp": now - 60 if expired else now + 300}
+        if subject is not None:
+            claims["sub"] = subject
+        token = jwt.encode(claims, settings.jwt_secret, algorithm=settings.jwt_algorithm)
+        if token_type == "access":
+            response = http.get("/api/v1/users/me", headers={"Authorization": "Bearer " + token})
+        else:
+            response = http.post("/api/v1/auth/refresh", json={"refresh_token": token})
+&gt;       assert response.status_code == 401, response.text
+E       AssertionError: {"detail":"internal server error"}
+E       assert 500 == 401
+E        +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code
+
+tests\module2\test_auth_ai.py:45: AssertionError</failure></testcase><testcase classname="tests.module2.test_auth_ai" name="test_invalid_credentials_return_401[M2-TC-002]" time="0.044"><failure message="AssertionError: {&quot;detail&quot;:&quot;internal server error&quot;}&#10;assert 500 == 401&#10; +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code">http = &lt;starlette.testclient.TestClient object at 0x0000014FFFDE2B60&gt;
+token_type = 'refresh', subject = 'not-an-integer', expired = False
+
+    @pytest.mark.parametrize(
+        "token_type,subject,expired",
+        [
+            pytest.param("access", "not-an-integer", False, id="M2-TC-001"),
+            pytest.param("refresh", "not-an-integer", False, id="M2-TC-002"),
+            pytest.param("refresh", None, False, id="M2-TC-003"),
+            pytest.param("access", "1", True, id="M2-TC-004"),
+            pytest.param("refresh", "1", True, id="M2-TC-005"),
+            pytest.param("access", None, False, id="M2-TC-006"),
+            pytest.param("access", str(2**63), False, id="M2-TC-007"),
+            pytest.param("refresh", str(2**63), False, id="M2-TC-008"),
+        ],
+    )
+    def test_invalid_credentials_return_401(http, token_type, subject, expired):
+        settings = get_settings()
+        now = int(time.time())
+        claims = {"type": token_type, "iat": now - 120, "exp": now - 60 if expired else now + 300}
+        if subject is not None:
+            claims["sub"] = subject
+        token = jwt.encode(claims, settings.jwt_secret, algorithm=settings.jwt_algorithm)
+        if token_type == "access":
+            response = http.get("/api/v1/users/me", headers={"Authorization": "Bearer " + token})
+        else:
+            response = http.post("/api/v1/auth/refresh", json={"refresh_token": token})
+&gt;       assert response.status_code == 401, response.text
+E       AssertionError: {"detail":"internal server error"}
+E       assert 500 == 401
+E        +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code
+
+tests\module2\test_auth_ai.py:45: AssertionError</failure></testcase><testcase classname="tests.module2.test_auth_ai" name="test_invalid_credentials_return_401[M2-TC-003]" time="0.049"><failure message="AssertionError: {&quot;detail&quot;:&quot;internal server error&quot;}&#10;assert 500 == 401&#10; +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code">http = &lt;starlette.testclient.TestClient object at 0x0000014F8002B160&gt;
+token_type = 'refresh', subject = None, expired = False
+
+    @pytest.mark.parametrize(
+        "token_type,subject,expired",
+        [
+            pytest.param("access", "not-an-integer", False, id="M2-TC-001"),
+            pytest.param("refresh", "not-an-integer", False, id="M2-TC-002"),
+            pytest.param("refresh", None, False, id="M2-TC-003"),
+            pytest.param("access", "1", True, id="M2-TC-004"),
+            pytest.param("refresh", "1", True, id="M2-TC-005"),
+            pytest.param("access", None, False, id="M2-TC-006"),
+            pytest.param("access", str(2**63), False, id="M2-TC-007"),
+            pytest.param("refresh", str(2**63), False, id="M2-TC-008"),
+        ],
+    )
+    def test_invalid_credentials_return_401(http, token_type, subject, expired):
+        settings = get_settings()
+        now = int(time.time())
+        claims = {"type": token_type, "iat": now - 120, "exp": now - 60 if expired else now + 300}
+        if subject is not None:
+            claims["sub"] = subject
+        token = jwt.encode(claims, settings.jwt_secret, algorithm=settings.jwt_algorithm)
+        if token_type == "access":
+            response = http.get("/api/v1/users/me", headers={"Authorization": "Bearer " + token})
+        else:
+            response = http.post("/api/v1/auth/refresh", json={"refresh_token": token})
+&gt;       assert response.status_code == 401, response.text
+E       AssertionError: {"detail":"internal server error"}
+E       assert 500 == 401
+E        +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code
+
+tests\module2\test_auth_ai.py:45: AssertionError</failure></testcase><testcase classname="tests.module2.test_auth_ai" name="test_invalid_credentials_return_401[M2-TC-004]" time="0.046" /><testcase classname="tests.module2.test_auth_ai" name="test_invalid_credentials_return_401[M2-TC-005]" time="0.059" /><testcase classname="tests.module2.test_auth_ai" name="test_invalid_credentials_return_401[M2-TC-006]" time="0.043" /><testcase classname="tests.module2.test_auth_ai" name="test_invalid_credentials_return_401[M2-TC-007]" time="0.055"><failure message="AssertionError: {&quot;detail&quot;:&quot;internal server error&quot;}&#10;assert 500 == 401&#10; +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code">http = &lt;starlette.testclient.TestClient object at 0x0000014F800BF850&gt;
+token_type = 'access', subject = '9223372036854775808', expired = False
+
+    @pytest.mark.parametrize(
+        "token_type,subject,expired",
+        [
+            pytest.param("access", "not-an-integer", False, id="M2-TC-001"),
+            pytest.param("refresh", "not-an-integer", False, id="M2-TC-002"),
+            pytest.param("refresh", None, False, id="M2-TC-003"),
+            pytest.param("access", "1", True, id="M2-TC-004"),
+            pytest.param("refresh", "1", True, id="M2-TC-005"),
+            pytest.param("access", None, False, id="M2-TC-006"),
+            pytest.param("access", str(2**63), False, id="M2-TC-007"),
+            pytest.param("refresh", str(2**63), False, id="M2-TC-008"),
+        ],
+    )
+    def test_invalid_credentials_return_401(http, token_type, subject, expired):
+        settings = get_settings()
+        now = int(time.time())
+        claims = {"type": token_type, "iat": now - 120, "exp": now - 60 if expired else now + 300}
+        if subject is not None:
+            claims["sub"] = subject
+        token = jwt.encode(claims, settings.jwt_secret, algorithm=settings.jwt_algorithm)
+        if token_type == "access":
+            response = http.get("/api/v1/users/me", headers={"Authorization": "Bearer " + token})
+        else:
+            response = http.post("/api/v1/auth/refresh", json={"refresh_token": token})
+&gt;       assert response.status_code == 401, response.text
+E       AssertionError: {"detail":"internal server error"}
+E       assert 500 == 401
+E        +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code
+
+tests\module2\test_auth_ai.py:45: AssertionError</failure></testcase><testcase classname="tests.module2.test_auth_ai" name="test_invalid_credentials_return_401[M2-TC-008]" time="0.044"><failure message="AssertionError: {&quot;detail&quot;:&quot;internal server error&quot;}&#10;assert 500 == 401&#10; +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code">http = &lt;starlette.testclient.TestClient object at 0x0000014F801770D0&gt;
+token_type = 'refresh', subject = '9223372036854775808', expired = False
+
+    @pytest.mark.parametrize(
+        "token_type,subject,expired",
+        [
+            pytest.param("access", "not-an-integer", False, id="M2-TC-001"),
+            pytest.param("refresh", "not-an-integer", False, id="M2-TC-002"),
+            pytest.param("refresh", None, False, id="M2-TC-003"),
+            pytest.param("access", "1", True, id="M2-TC-004"),
+            pytest.param("refresh", "1", True, id="M2-TC-005"),
+            pytest.param("access", None, False, id="M2-TC-006"),
+            pytest.param("access", str(2**63), False, id="M2-TC-007"),
+            pytest.param("refresh", str(2**63), False, id="M2-TC-008"),
+        ],
+    )
+    def test_invalid_credentials_return_401(http, token_type, subject, expired):
+        settings = get_settings()
+        now = int(time.time())
+        claims = {"type": token_type, "iat": now - 120, "exp": now - 60 if expired else now + 300}
+        if subject is not None:
+            claims["sub"] = subject
+        token = jwt.encode(claims, settings.jwt_secret, algorithm=settings.jwt_algorithm)
+        if token_type == "access":
+            response = http.get("/api/v1/users/me", headers={"Authorization": "Bearer " + token})
+        else:
+            response = http.post("/api/v1/auth/refresh", json={"refresh_token": token})
+&gt;       assert response.status_code == 401, response.text
+E       AssertionError: {"detail":"internal server error"}
+E       assert 500 == 401
+E        +  where 500 = &lt;Response [500 Internal Server Error]&gt;.status_code
+
+tests\module2\test_auth_ai.py:45: AssertionError</failure></testcase><testcase classname="tests.module2.test_auth_ai" name="test_nickname_length_boundary_preserves_previous_value[M2-TC-009]" time="0.549" /><testcase classname="tests.module2.test_auth_ai" name="test_unicode_nickname_boundary_and_clear[M2-TC-010]" time="0.488" /></testsuite></testsuites>
