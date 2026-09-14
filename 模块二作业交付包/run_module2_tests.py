@@ -19,7 +19,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--output-dir", type=Path)
     args = parser.parse_args()
-    out = (args.output_dir or HERE / "陆京超" / "执行结果" /
+    out = (args.output_dir or HERE / "执行结果" /
            datetime.now().strftime("%Y%m%d_%H%M%S_%f")).resolve()
     out.mkdir(parents=True, exist_ok=True)
     env = os.environ.copy()
