@@ -6,7 +6,7 @@ from passlib.context import CryptContext
 
 from app.core.config import get_settings
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+pwd_context = CryptContext(schemes=["bcrypt_sha256", "bcrypt"], deprecated="auto")
 
 
 def hash_password(password: str) -> str:
@@ -14,6 +14,10 @@ def hash_password(password: str) -> str:
 
 
 def verify_password(plain: str, hashed: str) -> bool:
+    # Legacy bcrypt cannot distinguish passwords sharing the first 72 bytes.
+    # These ambiguous credentials need a password reset, not silent truncation.
+    if pwd_context.identify(hashed) == "bcrypt" and len(plain.encode("utf-8")) >= 72:
+        return False
     return pwd_context.verify(plain, hashed)
 
 
